@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PINSKIN_Official</title>
+<style>
+  :root{
+    --navy: #0b1c3f;
+    --navy-deep: #060f24;
+    --navy-mid: #16305e;
+    --navy-soft: #2c4a86;
+    --white: #ffffff;
+    --off-white: #eef2fa;
+    --shadow: rgba(6, 15, 36, 0.35);
+  }
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    font-family: 'Malgun Gothic','Segoe UI',system-ui,-apple-system,sans-serif;
+    background: var(--navy-deep);
+    color: var(--navy);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ---------- floating background blobs ---------- */
+  .bg-decor{ position: fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none; }
+  .blob{
+    position:absolute; border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.10), rgba(255,255,255,0.02) 60%);
+    filter: blur(2px);
+    animation: floatY ease-in-out infinite;
+  }
+  .blob1{ width:260px; height:260px; top:8%; left:6%; animation-duration:9s; }
+  .blob2{ width:180px; height:180px; top:60%; left:80%; animation-duration:11s; animation-delay:1s;}
+  .blob3{ width:120px; height:120px; top:78%; left:12%; animation-duration:7.5s; animation-delay:.5s;}
+  .blob4{ width:340px; height:340px; top:-8%; left:65%; animation-duration:13s; animation-delay:2s;}
+
+  @keyframes floatY{
+    0%,100%{ transform: translateY(0) translateX(0); }
+    50%{ transform: translateY(-26px) translateX(10px); }
+  }
+  @keyframes floatSlow{
+    0%,100%{ transform: translateY(0) rotate(0deg); }
+    50%{ transform: translateY(-16px) rotate(4deg); }
+  }
+  @keyframes floatSway{
+    0%{ transform: translateY(0) translateX(0) rotate(0deg); }
+    25%{ transform: translateY(-14px) translateX(6px) rotate(-3deg); }
+    50%{ transform: translateY(-2px) translateX(-4px) rotate(2deg); }
+    75%{ transform: translateY(-18px) translateX(4px) rotate(-2deg); }
+    100%{ transform: translateY(0) translateX(0) rotate(0deg); }
+  }
+  @keyframes fadeIn{ from{opacity:0;} to{opacity:1;} }
+  @keyframes popIn{
+    from{ opacity:0; transform: translateY(24px) scale(.96); }
+    to{ opacity:1; transform: translateY(0) scale(1); }
+  }
+  @keyframes shake{
+    10%,90%{ transform: translateX(-2px); }
+    20%,80%{ transform: translateX(4px); }
+    30%,50%,70%{ transform: translateX(-8px); }
+    40%,60%{ transform: translateX(8px); }
+  }
+  @keyframes pulseGlow{
+    0%,100%{ box-shadow: 0 0 0 0 rgba(255,255,255,0.0); }
+    50%{ box-shadow: 0 0 40px 4px rgba(255,255,255,0.10); }
+  }
+
+  /* ---------- screen management ---------- */
+  .screen{
+    position: fixed; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; visibility:hidden; pointer-events:none;
+    z-index:1;
+  }
+  .screen.active{
+    opacity:1; visibility:visible; pointer-events:auto;
+  }
+
+  /* ================= PASSWORD SCREEN ================= */
+  #screen-password{
+    background: linear-gradient(160deg, var(--navy-deep) 0%, var(--navy) 55%, var(--navy-mid) 100%);
+  }
+  .pw-card{
+    background: rgba(255,255,255,0.98);
+    width: min(620px, 94vw);
+    border-radius: 22px;
+    padding: 50px 44px 46px;
+    text-align:center;
+    box-shadow: 0 30px 70px var(--shadow);
+    position:relative;
+    z-index:2;
+  }
+  .pw-logo{
+    width: 340px; height:340px; object-fit:contain;
+    margin: 0 auto 10px;
+    animation: floatSlow 4.5s ease-in-out infinite;
+  }
+  .pw-title{
+    font-size: 44px;
+    font-weight:900;
+    letter-spacing: 0.5px;
+    color: var(--navy);
+  }
+  .pw-subtitle{
+    margin-top:10px;
+    font-size: 15px;
+    color: var(--navy-soft);
+    font-weight:600;
+    letter-spacing:0.5px;
+  }
+  .pw-divider{
+    width:40px; height:3px; background: var(--navy); margin: 18px auto 20px; border-radius:2px; opacity:.8;
+  }
+  .pw-input-wrap{
+    display:flex; flex-direction:column; gap:12px; margin-top:6px;
+  }
+  #pw-input{
+    width:100%;
+    padding: 13px 16px;
+    border-radius: 12px;
+    border: 1.5px solid #dfe4ef;
+    font-size: 15px;
+    letter-spacing: 4px;
+    text-align:center;
+    outline:none;
+    color: var(--navy);
+    background: var(--off-white);
+    transition: border-color .2s, box-shadow .2s;
+  }
+  #pw-input:focus{
+    border-color: var(--navy);
+    box-shadow: 0 0 0 3px rgba(11,28,63,0.12);
+  }
+  #pw-submit{
+    padding: 13px 16px;
+    border:none;
+    border-radius:12px;
+    background: var(--navy);
+    color:#fff;
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:1px;
+    cursor:pointer;
+    transition: transform .15s ease, background .2s ease;
+  }
+  #pw-submit:hover{ background: var(--navy-mid); transform: translateY(-2px); }
+  #pw-submit:active{ transform: translateY(0); }
+  .pw-error{
+    margin-top:10px;
+    font-size:12.5px;
+    color:#c0392b;
+    font-weight:700;
+    height:16px;
+    opacity:0;
+  }
+  .pw-error.show{
+    opacity:1;
+    animation: shake .5s ease;
+  }
+
+  /* ================= HOME SCREEN ================= */
+  #screen-home{
+    background: var(--white);
+    flex-direction:column;
+    padding: 0;
+  }
+  .home-bg-icons{
+    position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:1;
+  }
+  .home-bg-icons span{
+    position:absolute; opacity:.10; filter: grayscale(1) brightness(.55);
+    animation: floatSway ease-in-out infinite;
+  }
+  .home-inner{
+    width:100%; height:100%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding: 24px;
+    overflow-y:auto;
+    position:relative; z-index:2;
+  }
+  .home-header{
+    display:flex; flex-direction:column; align-items:center; gap:0px; margin-bottom: 4px;
+  }
+  .home-header img{
+    width:380px; height:380px; object-fit:contain;
+    animation: floatSlow 5s ease-in-out infinite;
+  }
+  .home-header h1{
+    color: var(--navy); font-size:50px; letter-spacing:1px; font-weight:900;
+  }
+  .home-tagline{
+    color: var(--navy-soft);
+    font-size: 16px;
+    margin-top:10px;
+    margin-bottom: 56px;
+    letter-spacing:0.5px;
+    font-weight:700;
+  }
+
+  .banner-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    width: min(920px, 92vw);
+    margin: 0 auto;
+  }
+  @media (max-width: 720px){
+    .banner-grid{ grid-template-columns: 1fr; }
+  }
+
+  .banner{
+    position:relative;
+    background: var(--white);
+    border: 2px solid #e3e8f3;
+    border-radius: 24px;
+    padding: 40px 28px 34px;
+    min-height: 280px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    cursor:pointer;
+    box-shadow: 0 16px 40px rgba(11,28,63,0.10);
+    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+  }
+  .banner:hover{
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 28px 60px rgba(11,28,63,0.20);
+    border-color: var(--navy);
+  }
+  .banner-badge{
+    display:inline-block;
+    font-size:11px; font-weight:800; letter-spacing:1.5px;
+    color: var(--navy);
+    background: var(--off-white);
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .banner h2{
+    font-size: 26px; color: var(--navy); font-weight:800; margin-bottom:10px;
+  }
+  .banner p{
+    font-size: 14px; color:#5b6786; line-height:1.6; margin-bottom: 18px;
+  }
+  .banner .go{
+    font-size: 13px; font-weight:800; color: var(--navy);
+    display:flex; align-items:center; gap:6px;
+  }
+  .banner .go svg{ width:14px; height:14px; transition: transform .25s ease; }
+  .banner:hover .go svg{ transform: translateX(5px); }
+
+  /* ================= DETAIL SCREENS ================= */
+  .detail-screen{
+    background: linear-gradient(180deg, var(--off-white) 0%, #ffffff 60%);
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .detail-inner{
+    width:100%; height:100%;
+    overflow-y:auto;
+    position:relative; z-index:2;
+    padding: 30px 24px 60px;
+  }
+  .detail-topbar{
+    max-width: 920px; margin: 0 auto 30px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .back-btn{
+    display:flex; align-items:center; gap:8px;
+    background: var(--navy);
+    color:#fff; border:none;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size:13px; font-weight:700;
+    cursor:pointer;
+    transition: transform .2s ease, background .2s ease;
+  }
+  .back-btn:hover{ transform: translateX(-3px); background: var(--navy-mid); }
+  .detail-topbar .mini-logo{
+    width:34px; height:34px; object-fit:contain;
+    animation: floatSlow 5s ease-in-out infinite;
+  }
+
+  .detail-hero{
+    max-width: 920px; margin: 0 auto 36px;
+    text-align:center;
+    position:relative;
+  }
+  .detail-hero .float-decor{
+    position:absolute; font-size:40px; opacity:.9; pointer-events:none;
+    animation: floatSway ease-in-out infinite;
+  }
+  .detail-hero h2{
+    font-size: 30px; font-weight:900; color: var(--navy); letter-spacing:0.5px;
+  }
+  .detail-hero p{
+    margin-top:10px; color:#5b6786; font-size:14px; font-weight:600;
+  }
+
+  .card-grid{
+    max-width: 920px; margin: 0 auto;
+    display:grid; grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+  }
+  @media (max-width: 680px){ .card-grid{ grid-template-columns: 1fr; } }
+
+  .info-card{
+    background:#fff;
+    border: 1.5px solid #e6eaf4;
+    border-radius: 18px;
+    padding: 24px 22px;
+    box-shadow: 0 10px 26px rgba(11,28,63,0.06);
+    animation: popIn .6s ease both;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .info-card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(11,28,63,0.14);
+    border-color: var(--navy-soft);
+  }
+  .info-card .icon-float{
+    font-size: 30px; display:inline-block;
+    animation: floatSway ease-in-out infinite;
+    margin-bottom: 12px;
+  }
+  .info-card h3{
+    font-size:16px; font-weight:800; color: var(--navy); margin-bottom:8px;
+  }
+  .info-card .tag{
+    display:inline-block; font-size:10.5px; font-weight:800; letter-spacing:1px;
+    color:#fff; background: var(--navy-soft); padding:3px 9px; border-radius:999px;
+    margin-bottom:10px;
+  }
+  .info-card p{
+    font-size:13px; color:#606c8a; line-height:1.6;
+  }
+  .edit-note{
+    max-width: 920px; margin: 30px auto 0;
+    text-align:center; font-size:12px; color:#9aa4bd; font-weight:600;
+    border-top: 1px dashed #dfe4ef; padding-top: 18px;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-decor">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+  <div class="blob blob4"></div>
+</div>
+
+<!-- ===================== PASSWORD SCREEN ===================== -->
+<section id="screen-password" class="screen active">
+  <div class="pw-card">
+    <img src="logo.png" alt="PINSKIN Logo" class="pw-logo">
+    <div class="pw-title">PINSKIN_Official</div>
+    <div class="pw-subtitle">경상국립대학교 중앙 공모전 동아리</div>
+    <div class="pw-divider"></div>
+    <div class="pw-input-wrap">
+      <input type="password" id="pw-input" placeholder="비밀번호를 입력하세요" maxlength="12" autocomplete="off">
+      <button id="pw-submit">입장하기</button>
+      <div class="pw-error" id="pw-error">비밀번호가 올바르지 않습니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HOME SCREEN ===================== -->
+<section id="screen-home" class="screen">
+  <div class="home-bg-icons">
+    <span style="left:-70px; top:-50px; font-size:280px; animation-duration:15s;">🏆</span>
+    <span style="right:-90px; top:6%; font-size:230px; animation-duration:17s; animation-delay:1s;">🌐</span>
+    <span style="left:-60px; bottom:-70px; font-size:250px; animation-duration:16s; animation-delay:2s;">🌍</span>
+    <span style="right:-50px; bottom:-60px; font-size:210px; animation-duration:14s; animation-delay:.6s;">🏆</span>
+    <span style="left:42%; top:-110px; font-size:170px; animation-duration:13s; animation-delay:1.4s;">🌎</span>
+  </div>
+  <div class="home-inner">
+    <div class="home-header">
+      <img src="logo.png" alt="PINSKIN Logo">
+      <h1>PINSKIN_Official</h1>
+    </div>
+    <div class="home-tagline">경상국립대학교 중앙 공모전 동아리</div>
+
+    <div class="banner-grid">
+      <div class="banner" onclick="goTo('contest')">
+        <div class="banner-badge">CONTEST</div>
+        <h2>공모전 정보</h2>
+        <p>다양한 공모전 소식과 준비 팁, 일정을 한눈에 확인해보세요.</p>
+        <div class="go">자세히 보기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </div>
+
+      <div class="banner" onclick="goTo('activity')">
+        <div class="banner-badge">ACTIVITY</div>
+        <h2>대외활동 정보</h2>
+        <p>서포터즈, 인턴, 프로그램 등 다양한 대외활동 정보를 모았습니다.</p>
+        <div class="go">자세히 보기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTEST SCREEN ===================== -->
+<section id="screen-contest" class="screen detail-screen">
+  <div class="detail-inner">
+    <div class="detail-topbar">
+      <button class="back-btn" onclick="goTo('home')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 18l-6-6 6-6"/></svg>
+        홈으로
+      </button>
+      <img src="logo.png" class="mini-logo" alt="logo">
+    </div>
+    <div class="detail-hero">
+      <span class="float-decor" style="left:6%; top:-10px; animation-duration:5s;">🏆</span>
+      <span class="float-decor" style="right:8%; top:0; animation-duration:6s; animation-delay:.5s;">💡</span>
+      <h2>공모전 정보</h2>
+      <p>PINSKIN이 준비한 공모전 소식과 준비 자료입니다</p>
+    </div>
+    <div class="card-grid" id="contest-cards"></div>
+    <div class="edit-note">이 영역의 내용은 index.html 안의 contestData 배열을 수정하여 자유롭게 채워 넣을 수 있어요.</div>
+  </div>
+</section>
+
+<!-- ===================== ACTIVITY SCREEN ===================== -->
+<section id="screen-activity" class="screen detail-screen">
+  <div class="detail-inner">
+    <div class="detail-topbar">
+      <button class="back-btn" onclick="goTo('home')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 18l-6-6 6-6"/></svg>
+        홈으로
+      </button>
+      <img src="logo.png" class="mini-logo" alt="logo">
+    </div>
+    <div class="detail-hero">
+      <span class="float-decor" style="left:6%; top:-10px; animation-duration:5.4s;">🌐</span>
+      <span class="float-decor" style="right:8%; top:0; animation-duration:6.2s; animation-delay:.5s;">🤝</span>
+      <h2>대외활동 정보</h2>
+      <p>PINSKIN이 준비한 대외활동 소식과 지원 정보입니다</p>
+    </div>
+    <div class="card-grid" id="activity-cards"></div>
+    <div class="edit-note">이 영역의 내용은 index.html 안의 activityData 배열을 수정하여 자유롭게 채워 넣을 수 있어요.</div>
+  </div>
+</section>
+
+<script>
+  const CORRECT_PASSWORD = "041221";
+
+  const pwInput = document.getElementById('pw-input');
+  const pwError = document.getElementById('pw-error');
+
+  function tryLogin(){
+    if(pwInput.value === CORRECT_PASSWORD){
+      goTo('home');
+    } else {
+      pwError.classList.remove('show');
+      void pwError.offsetWidth;
+      pwError.classList.add('show');
+      pwInput.value = '';
+    }
+  }
+  document.getElementById('pw-submit').addEventListener('click', tryLogin);
+  pwInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') tryLogin(); });
+
+  function goTo(name){
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + name).classList.add('active');
+  }
+
+  // ---- content data (edit here) ----
+  const contestData = [
+    { icon:"🏆", tag:"진행중", title:"공모전 예시 1", desc:"여기에 진행 중인 공모전 이름과 간단한 설명, 접수 기간을 적어주세요." },
+    { icon:"📅", tag:"예정", title:"공모전 예시 2", desc:"곧 시작되는 공모전 일정과 참가 자격 등의 정보를 적어주세요." },
+    { icon:"💡", tag:"TIP", title:"공모전 준비 팁", desc:"기획서 작성 팁, 자주 하는 실수 등 팀원들에게 도움이 될 내용을 적어주세요." },
+    { icon:"📂", tag:"자료", title:"제출 자료 안내", desc:"공모전 제출 양식, 필수 서류 등 자료 링크를 정리해서 넣어주세요." },
+  ];
+  const activityData = [
+    { icon:"🌐", tag:"모집중", title:"대외활동 예시 1", desc:"서포터즈, 홍보대사 등 현재 모집 중인 대외활동 정보를 적어주세요." },
+    { icon:"🤝", tag:"예정", title:"대외활동 예시 2", desc:"다가오는 프로그램의 일정과 지원 방법을 적어주세요." },
+    { icon:"🎤", tag:"후기", title:"활동 후기", desc:"이전에 참여했던 대외활동에 대한 팀원들의 후기를 남겨주세요." },
+    { icon:"🚀", tag:"자료", title:"지원서 작성 가이드", desc:"자기소개서, 포트폴리오 작성에 도움이 되는 자료를 정리해주세요." },
+  ];
+
+  function renderCards(containerId, data){
+    const el = document.getElementById(containerId);
+    el.innerHTML = data.map((d,i) => `
+      <div class="info-card" style="animation-delay:${i*0.08}s">
+        <span class="icon-float" style="animation-duration:${4+i*0.5}s">${d.icon}</span>
+        <div class="tag">${d.tag}</div>
+        <h3>${d.title}</h3>
+        <p>${d.desc}</p>
+      </div>
+    `).join('');
+  }
+  renderCards('contest-cards', contestData);
+  renderCards('activity-cards', activityData);
+</script>
+
+</body>
+</html>
