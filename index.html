@@ -102,34 +102,6 @@
     animation: floatSway ease-in-out infinite;
   }
 
-  /* ---------- bouncing logo (password screen) ---------- */
-  .bounce-logo{
-    position:absolute;
-    z-index:1;
-    width: 72px; height:72px;
-    animation: bouncePath 20s linear infinite;
-  }
-  .bounce-logo .chip{
-    width:100%; height:100%;
-    background:#fff;
-    border-radius:18px;
-    padding:10px;
-    box-shadow: 0 16px 38px rgba(0,0,0,0.4);
-    display:flex; align-items:center; justify-content:center;
-  }
-  .bounce-logo img{ width:100%; height:100%; object-fit:contain; display:block; }
-  @keyframes bouncePath{
-    0%{   left:6%;  top:10%; }
-    11%{  left:72%; top:7%;  }
-    24%{  left:88%; top:52%; }
-    37%{  left:62%; top:82%; }
-    50%{  left:14%; top:78%; }
-    63%{  left:4%;  top:34%; }
-    76%{  left:42%; top:14%; }
-    88%{  left:80%; top:30%; }
-    100%{ left:6%;  top:10%; }
-  }
-
   /* ---------- screen management ---------- */
   .screen{
     position: fixed; inset:0;
@@ -440,9 +412,6 @@
     <span class="meteor" style="left:68%; animation-duration:4.4s; animation-delay:1.8s;"></span>
     <span class="meteor" style="left:80%; animation-duration:3.0s; animation-delay:2.9s;"></span>
     <span class="meteor" style="left:92%; animation-duration:3.8s; animation-delay:1.3s;"></span>
-  </div>
-  <div class="bounce-logo">
-    <div class="chip"><img src="logo.png" alt=""></div>
   </div>
   <div class="pw-card">
     <img src="logo.png" alt="PINSKIN Logo" class="pw-logo">
