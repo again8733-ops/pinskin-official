@@ -68,6 +68,61 @@
     50%{ box-shadow: 0 0 40px 4px rgba(255,255,255,0.10); }
   }
 
+  /* ---------- meteors (password screen) ---------- */
+  .meteors{ position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:1; }
+  .meteor{
+    position:absolute;
+    top:-10%;
+    width:2px; height:2px;
+    background:#fff;
+    border-radius:50%;
+    box-shadow: 0 0 8px 2px rgba(255,255,255,0.85);
+    opacity:0;
+    animation: meteorFall linear infinite;
+  }
+  .meteor::before{
+    content:"";
+    position:absolute;
+    top:50%; left:50%;
+    width:140px; height:1.5px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.85), rgba(255,255,255,0));
+    transform: translate(-100%, -50%);
+  }
+  @keyframes meteorFall{
+    0%{ transform: translate(0,0) rotate(35deg) scale(1); opacity:0; }
+    6%{ opacity:1; }
+    75%{ opacity:1; }
+    100%{ transform: translate(-620px, 620px) rotate(35deg) scale(1); opacity:0; }
+  }
+
+  /* ---------- bouncing logo (password screen) ---------- */
+  .bounce-logo{
+    position:absolute;
+    z-index:1;
+    width: 72px; height:72px;
+    animation: bouncePath 20s linear infinite;
+  }
+  .bounce-logo .chip{
+    width:100%; height:100%;
+    background:#fff;
+    border-radius:18px;
+    padding:10px;
+    box-shadow: 0 16px 38px rgba(0,0,0,0.4);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .bounce-logo img{ width:100%; height:100%; object-fit:contain; display:block; }
+  @keyframes bouncePath{
+    0%{   left:6%;  top:10%; }
+    11%{  left:72%; top:7%;  }
+    24%{  left:88%; top:52%; }
+    37%{  left:62%; top:82%; }
+    50%{  left:14%; top:78%; }
+    63%{  left:4%;  top:34%; }
+    76%{  left:42%; top:14%; }
+    88%{  left:80%; top:30%; }
+    100%{ left:6%;  top:10%; }
+  }
+
   /* ---------- screen management ---------- */
   .screen{
     position: fixed; inset:0;
@@ -281,17 +336,12 @@
   .back-btn:hover{ transform: translateX(-3px); background: var(--navy-mid); }
   .detail-topbar .mini-logo{
     width:34px; height:34px; object-fit:contain;
-    animation: floatSlow 5s ease-in-out infinite;
   }
 
   .detail-hero{
     max-width: 920px; margin: 0 auto 36px;
     text-align:center;
     position:relative;
-  }
-  .detail-hero .float-decor{
-    position:absolute; font-size:40px; opacity:.9; pointer-events:none;
-    animation: floatSway ease-in-out infinite;
   }
   .detail-hero h2{
     font-size: 30px; font-weight:900; color: var(--navy); letter-spacing:0.5px;
@@ -313,7 +363,6 @@
     border-radius: 18px;
     padding: 24px 22px;
     box-shadow: 0 10px 26px rgba(11,28,63,0.06);
-    animation: popIn .6s ease both;
     transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
   }
   .info-card:hover{
@@ -323,11 +372,10 @@
   }
   .info-card .icon-float{
     font-size: 30px; display:inline-block;
-    animation: floatSway ease-in-out infinite;
     margin-bottom: 12px;
   }
   .info-card h3{
-    font-size:16px; font-weight:800; color: var(--navy); margin-bottom:8px;
+    font-size:16px; font-weight:800; color: var(--navy); margin-bottom:8px; line-height:1.4;
   }
   .info-card .tag{
     display:inline-block; font-size:10.5px; font-weight:800; letter-spacing:1px;
@@ -337,6 +385,23 @@
   .info-card p{
     font-size:13px; color:#606c8a; line-height:1.6;
   }
+  .info-card p.recommend{
+    margin-top:8px; color:#3a4664; font-weight:600;
+  }
+  .info-card p.extra{
+    margin-top:6px; color:#3a4664; font-weight:600;
+  }
+  .info-card .card-link{
+    display:inline-flex; align-items:center; gap:6px;
+    margin-top:16px;
+    font-size:13px; font-weight:800; color:#fff;
+    background: var(--navy);
+    padding:9px 16px;
+    border-radius:999px;
+    text-decoration:none;
+    transition: background .2s ease, transform .2s ease;
+  }
+  .info-card .card-link:hover{ background: var(--navy-mid); transform: translateX(3px); }
   .edit-note{
     max-width: 920px; margin: 30px auto 0;
     text-align:center; font-size:12px; color:#9aa4bd; font-weight:600;
@@ -355,6 +420,18 @@
 
 <!-- ===================== PASSWORD SCREEN ===================== -->
 <section id="screen-password" class="screen active">
+  <div class="meteors">
+    <span class="meteor" style="left:8%;  animation-duration:3.2s; animation-delay:0s;"></span>
+    <span class="meteor" style="left:22%; animation-duration:4.1s; animation-delay:1.1s;"></span>
+    <span class="meteor" style="left:38%; animation-duration:2.8s; animation-delay:2.2s;"></span>
+    <span class="meteor" style="left:55%; animation-duration:3.6s; animation-delay:.4s;"></span>
+    <span class="meteor" style="left:68%; animation-duration:4.4s; animation-delay:1.8s;"></span>
+    <span class="meteor" style="left:80%; animation-duration:3.0s; animation-delay:2.9s;"></span>
+    <span class="meteor" style="left:92%; animation-duration:3.8s; animation-delay:1.3s;"></span>
+  </div>
+  <div class="bounce-logo">
+    <div class="chip"><img src="logo.png" alt=""></div>
+  </div>
   <div class="pw-card">
     <img src="logo.png" alt="PINSKIN Logo" class="pw-logo">
     <div class="pw-title">PINSKIN_Official</div>
@@ -417,8 +494,6 @@
       <img src="logo.png" class="mini-logo" alt="logo">
     </div>
     <div class="detail-hero">
-      <span class="float-decor" style="left:6%; top:-10px; animation-duration:5s;">🏆</span>
-      <span class="float-decor" style="right:8%; top:0; animation-duration:6s; animation-delay:.5s;">💡</span>
       <h2>공모전 정보</h2>
       <p>PINSKIN이 준비한 공모전 소식과 준비 자료입니다</p>
     </div>
@@ -438,8 +513,6 @@
       <img src="logo.png" class="mini-logo" alt="logo">
     </div>
     <div class="detail-hero">
-      <span class="float-decor" style="left:6%; top:-10px; animation-duration:5.4s;">🌐</span>
-      <span class="float-decor" style="right:8%; top:0; animation-duration:6.2s; animation-delay:.5s;">🤝</span>
       <h2>대외활동 정보</h2>
       <p>PINSKIN이 준비한 대외활동 소식과 지원 정보입니다</p>
     </div>
@@ -480,20 +553,69 @@
     { icon:"📂", tag:"자료", title:"제출 자료 안내", desc:"공모전 제출 양식, 필수 서류 등 자료 링크를 정리해서 넣어주세요." },
   ];
   const activityData = [
-    { icon:"🌐", tag:"모집중", title:"대외활동 예시 1", desc:"서포터즈, 홍보대사 등 현재 모집 중인 대외활동 정보를 적어주세요." },
-    { icon:"🤝", tag:"예정", title:"대외활동 예시 2", desc:"다가오는 프로그램의 일정과 지원 방법을 적어주세요." },
-    { icon:"🎤", tag:"후기", title:"활동 후기", desc:"이전에 참여했던 대외활동에 대한 팀원들의 후기를 남겨주세요." },
-    { icon:"🚀", tag:"자료", title:"지원서 작성 가이드", desc:"자기소개서, 포트폴리오 작성에 도움이 되는 자료를 정리해주세요." },
+    {
+      icon:"🏢", tag:"~8/26 마감",
+      title:"[한국중견기업연합회] '중견기업(UP) 플러스 크루' 4기 모집",
+      desc:"대한민국 경제의 '허리' 중견기업과 대한민국 중견기업을 대변할 기회",
+      recommend:"숏폼 제작 및 중견기업 관심자 추천",
+      extra:"팀 구성 : 최대 3인",
+      link:"https://buly.kr/GP5Knue"
+    },
+    {
+      icon:"🌾", tag:"~8/26 마감",
+      title:"[농림수산식품교육문화정보원] 대학생 서포터즈 모집",
+      desc:"농촌 체험마을 및 농업, 농촌 현장에서 활동",
+      recommend:"농업 관련 학과 재학생 추천",
+      link:"https://buly.kr/jbw0EC"
+    },
+    {
+      icon:"📊", tag:"~8/26 마감",
+      title:"2026 AI 기반 한류 빅데이터 대시보드 대학(원)생 서포터즈 모집",
+      desc:"한국국제문화교류진흥원의 서포터즈로 대시보드의 활용과 인지도를 높일 수 있는 기회!",
+      recommend:"한류 빅데이터 관심자 추천",
+      link:"https://buly.kr/Aln7uY1"
+    },
+    {
+      icon:"🕊️", tag:"~8/27 마감",
+      title:"[외교부] 제8차 「여성과 함께하는 평화」 국제회의 청년 서포터즈 모집",
+      desc:"외교부와 함께 일해볼 수 있는 기회!",
+      recommend:"「여성·평화·안보(Action with Women and Peace)」 국제회의에 관심자 추천",
+      link:"https://buly.kr/EoqYTOn"
+    },
+    {
+      icon:"🏭", tag:"~8/28 마감",
+      title:"WAVE 2026 울산세계미래산업박람회 서포터즈 모집",
+      desc:"울산의 산업 경쟁력과 미래 비전을 함께 알릴 서포터즈 모집",
+      recommend:"울산의 산업 및 박람회 관심자 추천",
+      link:"https://buly.kr/4xa7Xm0"
+    },
+    {
+      icon:"🚀", tag:"NEW · ~8/30 마감",
+      title:"[EXCO] FIX 2026 (Future Innovation tech eXpo) 청년 서포터즈 3기 모집",
+      desc:"미래산업과 혁신기술에 관심 있는 청년!",
+      recommend:"SNS 콘텐츠 제작이나 홍보 활동 관심자 추천",
+      link:"https://buly.kr/8TtJhbH"
+    },
+    {
+      icon:"🔋", tag:"NEW · ~9/4 마감",
+      title:"국내 최대 배터리 전시회, 인터배터리 서포터즈 3기 모집",
+      desc:"배터리 산업 전시회 '인터배터리'와 함께 할 기회!",
+      recommend:"공학 관련 학과 추천",
+      link:"https://buly.kr/H6kRlbk"
+    },
   ];
 
   function renderCards(containerId, data){
     const el = document.getElementById(containerId);
-    el.innerHTML = data.map((d,i) => `
-      <div class="info-card" style="animation-delay:${i*0.08}s">
-        <span class="icon-float" style="animation-duration:${4+i*0.5}s">${d.icon}</span>
+    el.innerHTML = data.map((d) => `
+      <div class="info-card">
+        <span class="icon-float">${d.icon}</span>
         <div class="tag">${d.tag}</div>
         <h3>${d.title}</h3>
         <p>${d.desc}</p>
+        ${d.recommend ? `<p class="recommend">🖐️ ${d.recommend}</p>` : ''}
+        ${d.extra ? `<p class="extra">🔗 ${d.extra}</p>` : ''}
+        ${d.link ? `<a class="card-link" href="${d.link}" target="_blank" rel="noopener noreferrer">신청 링크 바로가기 →</a>` : ''}
       </div>
     `).join('');
   }
