@@ -432,10 +432,45 @@
         </div>
       </div>
 
-      <div class="banner" onclick="goTo('activity')">
+      <div class="banner" onclick="goTo('activity-hub')">
         <div class="banner-badge">ACTIVITY</div>
         <h2>대외활동 정보</h2>
         <p>서포터즈, 인턴, 프로그램 등 다양한 대외활동 정보를 모았습니다.</p>
+        <div class="go">자세히 보기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ACTIVITY HUB SCREEN ===================== -->
+<section id="screen-activity-hub" class="screen detail-screen">
+  <div class="detail-inner">
+    <div class="detail-topbar">
+      <button class="back-btn" onclick="goTo('home')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 18l-6-6 6-6"/></svg>
+        홈으로
+      </button>
+      <img src="logo.png" class="mini-logo" alt="logo">
+    </div>
+    <div class="detail-hero">
+      <h2>대외활동 정보</h2>
+      <p>원하는 카테고리를 선택해주세요</p>
+    </div>
+    <div class="banner-grid">
+      <div class="banner" onclick="goTo('activity')">
+        <div class="banner-badge">ALL</div>
+        <h2>대외활동 정보</h2>
+        <p>현재 모집 중인 모든 대외활동 정보를 한눈에 확인하세요.</p>
+        <div class="go">자세히 보기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </div>
+      <div class="banner" onclick="goTo('activity-urgent')">
+        <div class="banner-badge">HOT</div>
+        <h2>마감임박 대외활동 정보</h2>
+        <p>마감이 얼마 남지 않은 대외활동만 모아서 보여드려요.</p>
         <div class="go">자세히 보기
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </div>
@@ -463,13 +498,13 @@
   </div>
 </section>
 
-<!-- ===================== ACTIVITY SCREEN ===================== -->
+<!-- ===================== ACTIVITY SCREEN (ALL) ===================== -->
 <section id="screen-activity" class="screen detail-screen">
   <div class="detail-inner">
     <div class="detail-topbar">
-      <button class="back-btn" onclick="goTo('home')">
+      <button class="back-btn" onclick="goTo('activity-hub')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 18l-6-6 6-6"/></svg>
-        홈으로
+        뒤로
       </button>
       <img src="logo.png" class="mini-logo" alt="logo">
     </div>
@@ -479,6 +514,25 @@
     </div>
     <div class="card-grid" id="activity-cards"></div>
     <div class="edit-note">이 영역의 내용은 index.html 안의 activityData 배열을 수정하여 자유롭게 채워 넣을 수 있어요.</div>
+  </div>
+</section>
+
+<!-- ===================== ACTIVITY SCREEN (URGENT) ===================== -->
+<section id="screen-activity-urgent" class="screen detail-screen">
+  <div class="detail-inner">
+    <div class="detail-topbar">
+      <button class="back-btn" onclick="goTo('activity-hub')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 18l-6-6 6-6"/></svg>
+        뒤로
+      </button>
+      <img src="logo.png" class="mini-logo" alt="logo">
+    </div>
+    <div class="detail-hero">
+      <h2>마감임박 대외활동 정보</h2>
+      <p>마감이 얼마 남지 않은 대외활동만 모아봤어요</p>
+    </div>
+    <div class="card-grid" id="activity-urgent-cards"></div>
+    <div class="edit-note">이 영역의 내용은 index.html 안의 activityData 배열에서 urgent:true 로 표시된 항목만 자동으로 모입니다.</div>
   </div>
 </section>
 
@@ -515,7 +569,7 @@
   ];
   const activityData = [
     {
-      icon:"🏢", tag:"~8/26 마감",
+      icon:"🏢", tag:"~8/26 마감", urgent:true,
       title:"[한국중견기업연합회] '중견기업(UP) 플러스 크루' 4기 모집",
       desc:"대한민국 경제의 '허리' 중견기업과 대한민국 중견기업을 대변할 기회",
       recommend:"숏폼 제작 및 중견기업 관심자 추천",
@@ -523,28 +577,28 @@
       link:"https://buly.kr/GP5Knue"
     },
     {
-      icon:"🌾", tag:"~8/26 마감",
+      icon:"🌾", tag:"~8/26 마감", urgent:true,
       title:"[농림수산식품교육문화정보원] 대학생 서포터즈 모집",
       desc:"농촌 체험마을 및 농업, 농촌 현장에서 활동",
       recommend:"농업 관련 학과 재학생 추천",
       link:"https://buly.kr/jbw0EC"
     },
     {
-      icon:"📊", tag:"~8/26 마감",
+      icon:"📊", tag:"~8/26 마감", urgent:true,
       title:"2026 AI 기반 한류 빅데이터 대시보드 대학(원)생 서포터즈 모집",
       desc:"한국국제문화교류진흥원의 서포터즈로 대시보드의 활용과 인지도를 높일 수 있는 기회!",
       recommend:"한류 빅데이터 관심자 추천",
       link:"https://buly.kr/Aln7uY1"
     },
     {
-      icon:"🕊️", tag:"~8/27 마감",
+      icon:"🕊️", tag:"~8/27 마감", urgent:true,
       title:"[외교부] 제8차 「여성과 함께하는 평화」 국제회의 청년 서포터즈 모집",
       desc:"외교부와 함께 일해볼 수 있는 기회!",
       recommend:"「여성·평화·안보(Action with Women and Peace)」 국제회의에 관심자 추천",
       link:"https://buly.kr/EoqYTOn"
     },
     {
-      icon:"🏭", tag:"~8/28 마감",
+      icon:"🏭", tag:"~8/28 마감", urgent:true,
       title:"WAVE 2026 울산세계미래산업박람회 서포터즈 모집",
       desc:"울산의 산업 경쟁력과 미래 비전을 함께 알릴 서포터즈 모집",
       recommend:"울산의 산업 및 박람회 관심자 추천",
@@ -583,6 +637,7 @@
   }
   renderCards('contest-cards', contestData);
   renderCards('activity-cards', activityData);
+  renderCards('activity-urgent-cards', activityData.filter(d => d.urgent));
 </script>
 
 </body>
