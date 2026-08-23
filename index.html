@@ -461,45 +461,10 @@
         </div>
       </div>
 
-      <div class="banner" onclick="goTo('activity-hub')">
+      <div class="banner" onclick="goTo('activity')">
         <div class="banner-badge">ACTIVITY</div>
         <h2>대외활동 정보</h2>
         <p>서포터즈, 인턴, 프로그램 등 다양한 대외활동 정보를 모았습니다.</p>
-        <div class="go">자세히 보기
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== ACTIVITY HUB SCREEN ===================== -->
-<section id="screen-activity-hub" class="screen detail-screen">
-  <div class="detail-inner">
-    <div class="detail-topbar">
-      <button class="back-btn" onclick="goTo('home')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 18l-6-6 6-6"/></svg>
-        홈으로
-      </button>
-      <img src="logo.png" class="mini-logo" alt="logo">
-    </div>
-    <div class="detail-hero">
-      <h2>대외활동 정보</h2>
-      <p>원하는 카테고리를 선택해주세요</p>
-    </div>
-    <div class="banner-grid">
-      <div class="banner" onclick="goTo('activity')">
-        <div class="banner-badge">ALL</div>
-        <h2>대외활동 정보</h2>
-        <p>현재 모집 중인 모든 대외활동 정보를 한눈에 확인하세요.</p>
-        <div class="go">자세히 보기
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </div>
-      </div>
-      <div class="banner" onclick="goTo('activity-urgent')">
-        <div class="banner-badge">HOT</div>
-        <h2>⏰ 마감임박 대외활동 정보</h2>
-        <p>마감이 얼마 남지 않은 대외활동만 모아서 보여드려요.</p>
         <div class="go">자세히 보기
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </div>
@@ -531,37 +496,18 @@
 <section id="screen-activity" class="screen detail-screen">
   <div class="detail-inner">
     <div class="detail-topbar">
-      <button class="back-btn" onclick="goTo('activity-hub')">
+      <button class="back-btn" onclick="goTo('home')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 18l-6-6 6-6"/></svg>
-        뒤로
+        홈으로
       </button>
       <img src="logo.png" class="mini-logo" alt="logo">
     </div>
     <div class="detail-hero">
-      <h2>대외활동 정보</h2>
-      <p>PINSKIN이 준비한 대외활동 소식과 지원 정보입니다</p>
+      <h2><span class="urgent-icon">⏰</span>대외활동 정보</h2>
+      <p>PINSKIN이 준비한 대외활동 소식과 지원 정보입니다 · 마감이 임박한 항목은 배지로 표시돼요</p>
     </div>
     <div class="card-grid" id="activity-cards"></div>
     <div class="edit-note">이 영역의 내용은 index.html 안의 activityData 배열을 수정하여 자유롭게 채워 넣을 수 있어요.</div>
-  </div>
-</section>
-
-<!-- ===================== ACTIVITY SCREEN (URGENT) ===================== -->
-<section id="screen-activity-urgent" class="screen detail-screen">
-  <div class="detail-inner">
-    <div class="detail-topbar">
-      <button class="back-btn" onclick="goTo('activity-hub')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M15 18l-6-6 6-6"/></svg>
-        뒤로
-      </button>
-      <img src="logo.png" class="mini-logo" alt="logo">
-    </div>
-    <div class="detail-hero">
-      <h2><span class="urgent-icon">⏰</span>마감임박 대외활동 정보</h2>
-      <p>마감이 얼마 남지 않은 대외활동만 모아봤어요</p>
-    </div>
-    <div class="card-grid" id="activity-urgent-cards"></div>
-    <div class="edit-note">이 영역의 내용은 index.html 안의 activityData 배열에서 urgent:true 로 표시된 항목만 자동으로 모입니다.</div>
   </div>
 </section>
 
@@ -649,11 +595,11 @@
     },
   ];
 
-  function renderCards(containerId, data, opts={}){
+  function renderCards(containerId, data){
     const el = document.getElementById(containerId);
     el.innerHTML = data.map((d) => `
       <div class="info-card">
-        ${opts.urgent ? '<span class="urgent-badge">⏰ 마감임박</span>' : (d.isNew ? '<span class="new-badge">NEW</span>' : '')}
+        ${d.urgent ? '<span class="urgent-badge">⏰ 마감임박</span>' : (d.isNew ? '<span class="new-badge">NEW</span>' : '')}
         <span class="icon-float">${d.icon}</span>
         <div class="tag">${d.tag}</div>
         <h3>${d.title}</h3>
@@ -666,7 +612,6 @@
   }
   renderCards('contest-cards', contestData);
   renderCards('activity-cards', activityData);
-  renderCards('activity-urgent-cards', activityData.filter(d => d.urgent), { urgent:true });
 </script>
 
 </body>
