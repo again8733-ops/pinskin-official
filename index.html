@@ -230,12 +230,15 @@
 
   .banner-grid{
     display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-    width: min(920px, 92vw);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    width: min(1180px, 92vw);
     margin: 0 auto;
   }
-  @media (max-width: 720px){
+  @media (max-width: 980px){
+    .banner-grid{ grid-template-columns: 1fr 1fr; width: min(720px, 92vw); }
+  }
+  @media (max-width: 620px){
     .banner-grid{ grid-template-columns: 1fr; }
   }
 
@@ -496,6 +499,15 @@
         <div class="banner-badge">ACTIVITY</div>
         <h2>대외활동 정보</h2>
         <p>서포터즈, 인턴, 프로그램 등 다양한 대외활동 정보를 모았습니다.</p>
+        <div class="go">자세히 보기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+      </div>
+
+      <div class="banner" onclick="window.open('https://open.kakao.com/o/gPWJZlKi','_blank','noopener')">
+        <div class="banner-badge">RECRUIT</div>
+        <h2>핀스킨 팀원모집 링크</h2>
+        <p>핀스킨과 함께할 새로운 팀원을 모집합니다. 오픈채팅으로 바로 문의해보세요.</p>
         <div class="go">자세히 보기
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </div>
