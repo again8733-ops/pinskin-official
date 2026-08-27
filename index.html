@@ -325,6 +325,16 @@
   .detail-hero p{
     margin-top:10px; color:#5b6786; font-size:14px; font-weight:600;
   }
+  .detail-hero p.upload-notice{
+    margin-top:8px;
+  }
+  .detail-hero .highlight-time{
+    color: var(--navy);
+    font-weight:900;
+    background: rgba(11,28,63,0.08);
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
 
   .card-grid{
     max-width: 920px; margin: 0 auto;
@@ -546,8 +556,9 @@
       <img src="logo.png" class="mini-logo" alt="logo">
     </div>
     <div class="detail-hero">
-      <h2><span class="urgent-icon">⏰</span>대외활동 정보</h2>
+      <h2><span class="urgent-icon">🌐</span>대외활동 정보</h2>
       <p>Pinskin이 준비한 대외활동 소식과 지원 정보입니다 · 마감이 임박한 항목은 배지로 표시돼요</p>
+      <p class="upload-notice">대외활동의 경우 <span class="highlight-time">매주 수요일 오후 7시</span>에 업로드됩니다.</p>
     </div>
     <div class="card-grid" id="activity-cards"></div>
     <div class="edit-note">이 영역의 내용은 index.html 안의 activityData 배열을 수정하여 자유롭게 채워 넣을 수 있어요.</div>
